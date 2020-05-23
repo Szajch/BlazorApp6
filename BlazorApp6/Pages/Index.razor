@@ -1,0 +1,77 @@
+﻿@page "/"
+
+@using BlazorApp6.Data
+@using System.Diagnostics
+@inject WeatherForecastService ForecastService
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<p>Data: @currentDate</p>
+<br />
+<EditForm Model="_testNumbers" OnValidSubmit="ClickTest">
+    <DataAnnotationsValidator />
+
+    <div class="form-group col-sm-2">
+        <InputNumber @bind-Value="_testNumbers.Number1" class="form-control" placeholder="Liczba 1" />
+        <ValidationMessage For="@(() => _testNumbers.Number1)" /> <br />
+        <InputNumber @bind-Value="_testNumbers.Number2" class="form-control" placeholder="Liczba 2" />
+        <ValidationMessage For="@(() => _testNumbers.Number2)" /> <br />
+        <button type="submit" class="btn btn-primary">Click me</button>
+    </div>
+
+</EditForm>
+
+@if (exception != null)
+{
+    <p>Wyjebał exception: @exception?.Message</p>
+    <p>Po czasie: @(stopwatch.ElapsedMilliseconds / 1000)</p>
+}
+
+@if (isClickTestOngoing && testNumber == null && exception == null)
+{
+    <p>@openingString</p>
+}
+else if (!isClickTestOngoing && testNumber != null && exception == null)
+{
+    <p>Liczba: @testNumber</p>
+    <p>Czas jaki upłynął: @elapsedTime</p>
+}
+
+
+
+
+@code {
+    private DateTime currentDate = DateTime.Now;
+    private int? testNumber;
+    private Stopwatch stopwatch;
+    private long elapsedTime;
+    private const string openingString = "Poszet!!!";
+    private Exception exception;
+    private bool isClickTestOngoing;
+    private TestNumbers _testNumbers = new TestNumbers();
+
+    private async Task ClickTest()
+    {
+        try
+        {
+            testNumber = null;
+            isClickTestOngoing = true;
+
+            stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            testNumber = await ForecastService.TestNumbers(_testNumbers?.Number1 ?? 0, _testNumbers?.Number2 ?? 0);
+
+            stopwatch.Stop();
+            elapsedTime = stopwatch.ElapsedMilliseconds / 1000;
+            isClickTestOngoing = false;
+        }
+        catch (Exception ex)
+        {
+            exception = ex;
+            isClickTestOngoing = false;
+        }
+    }
+}
