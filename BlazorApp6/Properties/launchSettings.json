@@ -26,6 +26,9 @@
       "commandName": "Docker",
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
       "publishAllPorts": true
+    },
+    "Azure Dev Spaces": {
+      "commandName": "AzureDevSpaces"
     }
   }
 }
