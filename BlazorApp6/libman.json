@@ -1,0 +1,10 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "pdfmake@0.1.66",
+      "destination": "wwwroot/lib/pdfmake/"
+    }
+  ]
+}

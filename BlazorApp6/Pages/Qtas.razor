@@ -1,5 +1,6 @@
 ﻿@page "/qtas"
 @using BlazorApp6.Data
+@inject IJSRuntime JSRuntime
 
 <h3>Qtass 25cm</h3>
 
@@ -30,6 +31,8 @@
     </RowTemplate>
 </TableTemplate>
 
+<button @onclick="@(() => Test())">Test</button>
+
 @code {
     private List<WeatherForecast> forecasts { get; set; } = new List<WeatherForecast>();
 
@@ -39,6 +42,8 @@
         new WeatherForecast { Date = DateTime.Now, TemperatureC = 34, Summary = "Test1" },
         new WeatherForecast { Date = DateTime.Now.AddDays(-3), TemperatureC = 15, Summary = "Test2" } };
     }
+
+    private async Task Test() => await JSRuntime.InvokeVoidAsync("test1", forecasts?.Count());
 
     private void SortTable(string columnName)
     {
