@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  blazorapp6:
+    image: ${DOCKER_REGISTRY-}blazorapp6
+    build:
+      context: .
+      dockerfile: BlazorApp6\Dockerfile
